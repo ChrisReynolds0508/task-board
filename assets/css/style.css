@@ -18,9 +18,13 @@ width: 100%;
   cursor: grab;
 }
 
+.taskCard:active {
+  cursor: grabbing;
+}
+/* 
 #todo-cards {
   display:flex;
   flex-direction: column;
   background-color: orange;
   gap: 5px;
-}
+} */
