@@ -1,78 +1,95 @@
 
 // Retrieve tasks and nextId from localStorage
-let taskList = JSON.parse(localStorage.getItem("tasks"));
-if (!taskList || !Array.isArray(taskList)) {
-    taskList = [];
-}
-let nextId = JSON.parse(localStorage.getItem("nextId"));
+let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
+let nextId = JSON.parse(localStorage.getItem("nextId")) || 1;
 
-// Todo: create a function to generate a unique task id
+// Function to generate a unique task id
 function generateTaskId() {
-    if (!nextId) {
-        nextId = 1;
-    } else {
-        nextId++;
-    }
+    let id = nextId;
+    nextId++;
     localStorage.setItem("nextId", JSON.stringify(nextId));
-    return nextId;
+    return id;
 }
 
-// Todo: create a function to create a task card
+// Function to create a task card element
 function createTaskCard(task) {
-console.log(task.name)
-    let card = $("<div>").addClass("taskCard")
-    let name = $("<h3>").addClass("taskName").text(task.name)
-    card.append(name)
+    let card = $("<div>").addClass("taskCard");
+    card.attr("id", task.id); // Assign task id to card
+
+    let name = $("<h3>").addClass("taskName").text(task.name);
+    let description = $("<p>").addClass("taskDescription").text(task.description);
+    let dueDate = $("<p>").addClass("dueDate").text(task.dueDate);
+    let deleteButton = $("<button>").addClass("deleteButton btn btn-danger").text("Delete");
+
+    card.append(name, description, dueDate, deleteButton);
     return card;
 }
 
-// Todo: create a function to render the task list and make cards draggable
+// Function to render task cards in their respective lanes
 function renderTaskList() {
-let todoContainer = $("#todo-cards")
-for (let i=0; i< taskList.length; i++){
-let card = createTaskCard(taskList[i])
+    $("#todo-cards").empty();
+    $("#in-progress-cards").empty();
+    $("#done-cards").empty();
 
-todoContainer.append(card)
-
-}}
-
-// Todo: create a function to handle adding a new task
-function handleAddTask(event){
-event.preventDefault();
-let taskName = $("#taskName").val();
-let taskDescription = $("#taskDescription").val();
-let dueDate = $("#datepicker").val();
-
-let task = {
-    id: generateTaskId(),
-    name: taskName,
-    description: taskDescription,
-    dueDate: dueDate
-
-};
-taskList.push(task);
-console.log(taskList);
-localStorage.setItem("tasks", JSON.stringify(taskList));
-
+    taskList.forEach(function(task) {
+        let card = createTaskCard(task);
+        $("#" + task.status + "-cards").append(card);
+        card.draggable();
+    });
 }
 
+// Function to handle form submission (adding a new task)
+function handleAddTask(event) {
+    event.preventDefault();
 
+    let taskName = $("#taskName").val();
+    let taskDescription = $("#taskDescription").val();
+    let dueDate = $("#datepicker").val();
 
-// Todo: create a function to handle deleting a task
-function handleDeleteTask(event){
+    let task = {
+        id: generateTaskId(),
+        name: taskName,
+        description: taskDescription,
+        dueDate: dueDate,
+        status: "todo" // Initial status, you can change this based on your workflow
+    };
 
-}
-
-// Todo: create a function to handle dropping a task into a new status lane
-function handleDrop(event, ui) {
-
-}
-
-// Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
-$(document).ready(function () {
+    taskList.push(task);
+    localStorage.setItem("tasks", JSON.stringify(taskList));
     renderTaskList();
-    $("#taskForm").on("submit", handleAddTask);
-    $( "#datepicker" ).datepicker();
+    $("#formModal").modal("hide"); // Hide the modal after submission
+    $("#taskForm").trigger("reset"); // Reset form fields
+}
 
+// Function to handle deleting a task
+function handleDeleteTask(event) {
+    let taskId = $(event.target).closest(".taskCard").attr("id");
+    taskList = taskList.filter(task => task.id !== parseInt(taskId)); // Convert taskId to integer if necessary
+    localStorage.setItem("tasks", JSON.stringify(taskList));
+    renderTaskList();
+}
+
+// Function to initialize the page
+$(document).ready(function() {
+    renderTaskList(); // Render tasks when the page loads
+    $("#taskForm").on("submit", handleAddTask); // Handle form submission
+    $(".deleteButton").on("click", handleDeleteTask); // Handle delete button clicks
+
+    // Make task cards draggable
+    $(".taskCard").draggable({
+        revert: "invalid", // Snap back if not dropped into a droppable area
+        stack: ".taskCard", // Ensure dragged cards stack correctly
+        containment: ".swim-lanes", // Constrain dragging within swim lanes
+        zIndex: 1000,
+        
+    });
+
+    // Make lanes droppable
+    $(".drop-area").droppable({
+        accept: ".taskCard", // Only accept task cards
+         // Handle drop events
+    });
+
+    // Initialize datepicker
+    $("#datepicker").datepicker();
 });
-
