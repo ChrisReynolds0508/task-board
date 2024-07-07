@@ -7,10 +7,20 @@ body {
   min-height: 60vh;
 }
 
-.task-card {
+.taskCard {
   margin: 0 auto;
+border: 1px red solid;
+padding: 5px;
+width: 100%;
 }
 
-.task-card:hover {
+.taskCard:hover {
   cursor: grab;
+}
+
+#todo-cards {
+  display:flex;
+  flex-direction: column;
+  background-color: orange;
+  gap: 5px;
 }
