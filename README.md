@@ -16,10 +16,10 @@ Open the webpage and click the 'Add Task' button.  You will be met with a modal 
 As you make progress on the tasks in your task list, you can drag them to their respective columns.  Once a task is no longer needed you can press the delete button in order to get rido of the task card. 
 
 ## Screenshot 
-![video of the deployed task board webpage](./assets/images/task-board-demo.mp4)
+![Screenshot of the deployed task board webpage](./assets/images/Screenshot.png)
 
 ## URL
-
+https://chrisreynolds0508.github.io/task-board/
 
 ## Authors
 Chris Reynolds
