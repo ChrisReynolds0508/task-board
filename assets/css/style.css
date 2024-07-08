@@ -23,3 +23,17 @@ width: 100%;
   cursor: grabbing;
 }
 
+.task-overdue {
+  background-color: #f8d7da; /* Red background for overdue tasks */
+  border-color: #f5c6cb; /* Red border color */
+}
+
+.task-due-soon {
+  background-color: #fff3cd; /* Yellow background for tasks due soon */
+  border-color: #ffeeba; /* Yellow border color */
+}
+
+.task-normal {
+  background-color: #d1ecf1; /* Light blue background for tasks with ample time */
+  border-color: #bee5eb; /* Light blue border color */
+}
