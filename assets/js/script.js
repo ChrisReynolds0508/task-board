@@ -57,7 +57,7 @@ function handleAddTask(event) {
         name: taskName,
         description: taskDescription,
         dueDate: dueDate,
-        status: "todo" // Initial status, you can change this based on your workflow
+        status: "todo" 
     };
 
     taskList.push(task);
@@ -68,6 +68,7 @@ function handleAddTask(event) {
 }
 
 // Function to handle deleting a task
+
 function handleDeleteTask(event) {
     let taskId = $(event.target).closest(".taskCard").attr("id");
     taskList = taskList.filter(task => task.id !== parseInt(taskId)); // Convert taskId to integer if necessary
@@ -82,10 +83,11 @@ $(document).ready(function() {
     $(".deleteButton").on("click", handleDeleteTask); // Handle delete button clicks
     $("#datepicker").datepicker();
     });
-
-    // Make lanes droppable
+$(document).on("click", ".deleteButton", handleDeleteTask); // Handle delete button clicks
+    
     $(".drop-area").droppable({
         accept: ".taskCard", // Only accept task cards
+    
     });
 
  
