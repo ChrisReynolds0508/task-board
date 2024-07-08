@@ -1,3 +1,6 @@
+*{
+  border: black 1px solid;
+}
 body {
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -21,10 +24,4 @@ width: 100%;
 .taskCard:active {
   cursor: grabbing;
 }
-/* 
-#todo-cards {
-  display:flex;
-  flex-direction: column;
-  background-color: orange;
-  gap: 5px;
-} */
+

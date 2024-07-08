@@ -22,6 +22,12 @@ function createTaskCard(task) {
     let deleteButton = $("<button>").addClass("deleteButton btn btn-danger").text("Delete");
 
     card.append(name, description, dueDate, deleteButton);
+    card.draggable({
+        revert: "invalid",
+        stack: ".taskCard",
+        containment: ".swim-lanes",
+        zIndex: 1000
+    });
     return card;
 }
 
@@ -74,22 +80,12 @@ $(document).ready(function() {
     renderTaskList(); // Render tasks when the page loads
     $("#taskForm").on("submit", handleAddTask); // Handle form submission
     $(".deleteButton").on("click", handleDeleteTask); // Handle delete button clicks
-
-    // Make task cards draggable
-    $(".taskCard").draggable({
-        revert: "invalid", // Snap back if not dropped into a droppable area
-        stack: ".taskCard", // Ensure dragged cards stack correctly
-        containment: ".swim-lanes", // Constrain dragging within swim lanes
-        zIndex: 1000,
-        
+    $("#datepicker").datepicker();
     });
 
     // Make lanes droppable
     $(".drop-area").droppable({
         accept: ".taskCard", // Only accept task cards
-         // Handle drop events
     });
 
-    // Initialize datepicker
-    $("#datepicker").datepicker();
-});
+ 
